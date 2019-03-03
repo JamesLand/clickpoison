@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>ClickPoison options</title>
+    </head>
+    <body>
+        <h1>Options:</h1>
+        <br>
+        <p>Clicks while on a page which satisfies one of these rules will be recorded. Useful for webpages like Reddit which take you to other websites. Rules will be evaluated in the order they are provided.</p>
+        <p>Rules must provide a name and a regex expression in the following structure:</p>
+        <p>Name:Rule</p>
+        <p>For example: Reddit:.*reddit\.com.*</p>
+        <textarea rows="8" cols="80" id="fromPageRules"></textarea>
+        <br>
+        <button id="save">Save</button>
+        <script src="options.js"></script> 
+    </body>
+</html>
