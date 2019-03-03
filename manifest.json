@@ -1,0 +1,14 @@
+{
+    "name": "clickpoison",
+    "version": "0.0.1",
+    "description": "ClickPoison is an extension which seeks to limit the time
+    spent on timewasting websites by providing negative feedback every time the
+    user clicks on a link to a new page.",
+    "permissions": ["storage", "tabs"],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "manifest_version": 2
+
+}
