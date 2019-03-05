@@ -9,20 +9,21 @@ function restoreOptions() {
 function saveFromPageRules() {
     chrome.storage.sync.get(["rules"], function(result) {
         let storeRules = result.rules;
+        if (storeRules.from == null) storeRules.from = {};
+
         let domRules = getRulesFromDOM();
-        let updatedStoreRules = {};
-        for (let [k, domRule] of Object.entries(domRules)) {
-            if (Object.keys(storeRules).includes(domRule.name)){
+        let updatedStoreRules = {from: {}};
+        for (let [k, domRule] of Object.entries(domRules.from)) {
+            if (Object.keys(storeRules.from).includes(domRule.name)){
                 //Update rule
-                storeRules[domRule.name].rule = domRule.rule;
-                updatedStoreRules[domRule.name] = storeRules[domRule.name];
+                storeRules.from[domRule.name].rule = domRule.rule;
+                updatedStoreRules.from[domRule.name] = storeRules[domRule.name];
             }
             else {
                 //Add rule
-                updatedStoreRules[domRule.name] = {
+                updatedStoreRules.from[domRule.name] = {
                     name: domRule.name,
                     rule: domRule.rule,
-                    type: "from", //TODO: This is going to have to be two separate sets of rules I think
                     clicks: 0
                 };
             }
@@ -35,12 +36,12 @@ function saveFromPageRules() {
 
 function getRulesFromDOM() {
     let fromRulesBox = document.getElementById("fromPageRules");
-    let rules = {};
+    let rules = {from: {}};
     for (let line of fromRulesBox.value.split("\n")) {
         let rule = parseRuleFromString(line);
         if (rule != null) {
             //TODO: Add duplicate checking here.
-            rules[rule.name] = rule;
+            rules.from[rule.name] = rule;
         }
     }
     return rules;
@@ -75,7 +76,7 @@ function restoreFromPageRules() {
     chrome.storage.sync.get(["rules"], function(result) {
         let boxText = "";
         if (result.rules == null) return;
-        for (let [key, rule] of Object.entries(result.rules)) {
+        for (let [key, rule] of Object.entries(result.rules.from)) {
             let line = `${rule.name}:${rule.rule}\n`;
             boxText = boxText.concat(line);
         }
