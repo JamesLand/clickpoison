@@ -31,7 +31,7 @@ chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
             console.log("Is from rule, updating clicks.");
             //TODO: This is where the program breaks. Resume from here.
             rules = incrementRule(rules, fromRule, "from");
-            console.log(`Current state: ${rules}`);
+            console.log(rules);
             chrome.storage.sync.set({"rules": rules}, function() {});
         }
         else {
@@ -54,9 +54,8 @@ chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
 function checkUrl(rules, url, type) {
     if (rules[type] == null) return null;
     for (let rule of Object.values(rules[type])) {
-        if (new RegExp(rule.rule).test(url)) {
-            console.log(url);
-            return rule.rule;
+        if (rule.rule != null && new RegExp(rule.rule).test(url)) {
+            return rule;
         }
     }
     return null;
@@ -85,7 +84,6 @@ function updateTabs(tabId, url) {
         return;
     }
     tabs[tabId].url = url;
-    console.log(tabs);
 }
 
 
